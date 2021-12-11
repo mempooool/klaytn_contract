@@ -1103,8 +1103,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     // Token symbol
     string private _symbol;
 
-    // Optional mapping for token URIs
-    mapping(uint256 => string) private _tokenURIs;
+    string public baseURI;
 
     /*
      *     bytes4(keccak256('name()')) == 0x06fdde03
@@ -1124,6 +1123,10 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
 
         // register the supported interfaces to conform to KIP17 via KIP13
         _registerInterface(_INTERFACE_ID_KIP17_METADATA);
+    }
+
+    function _setBaseURI(string memory baseURI_) internal {
+        baseURI = baseURI_;
     }
 
     /**
@@ -1152,37 +1155,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
             _exists(tokenId),
             "KIP17Metadata: URI query for nonexistent token"
         );
-        return _tokenURIs[tokenId];
-    }
-
-    /**
-     * @dev Internal function to set the token URI for a given token.
-     * Reverts if the token ID does not exist.
-     * @param tokenId uint256 ID of the token to set its URI
-     * @param uri string URI to assign
-     */
-    function _setTokenURI(uint256 tokenId, string memory uri) internal {
-        require(
-            _exists(tokenId),
-            "KIP17Metadata: URI set of nonexistent token"
-        );
-        _tokenURIs[tokenId] = uri;
-    }
-
-    /**
-     * @dev Internal function to burn a specific token.
-     * Reverts if the token does not exist.
-     * Deprecated, use _burn(uint256) instead.
-     * @param owner owner of the token to burn
-     * @param tokenId uint256 ID of the token being burned by the msg.sender
-     */
-    function _burn(address owner, uint256 tokenId) internal {
-        super._burn(owner, tokenId);
-
-        // Clear metadata (if any)
-        if (bytes(_tokenURIs[tokenId]).length != 0) {
-            delete _tokenURIs[tokenId];
-        }
+        return string(abi.encodePacked(baseURI, tokenId));
     }
 }
 
@@ -1282,41 +1255,6 @@ contract Ownable {
         );
         emit OwnershipTransferred(_owner, newOwner);
         _owner = newOwner;
-    }
-}
-
-// File contracts/token/KIP17/KIP17MetadataMintableOwnable.sol
-
-/**
- * @title KIP17MetadataMintable
- * @dev KIP17 minting logic with metadata.
- */
-contract KIP17MetadataMintableOwnable is KIP13, KIP17, KIP17Metadata, Ownable {
-    bytes4 private constant _INTERFACE_ID_KIP17_METADATA_MINTABLE = 0xfac27f46;
-
-    /**
-     * @dev Constructor function.
-     */
-    constructor() public {
-        // register the supported interface to conform to KIP17Mintable via KIP13
-        _registerInterface(_INTERFACE_ID_KIP17_METADATA_MINTABLE);
-    }
-
-    /**
-     * @dev Function to mint tokens.
-     * @param to The address that will receive the minted tokens.
-     * @param tokenId The token id to mint.
-     * @param tokenURI The token URI of the minted token.
-     * @return A boolean that indicates if the operation was successful.
-     */
-    function mintWithTokenURI(
-        address to,
-        uint256 tokenId,
-        string memory tokenURI
-    ) public onlyOwner returns (bool) {
-        _mint(to, tokenId);
-        _setTokenURI(tokenId, tokenURI);
-        return true;
     }
 }
 
@@ -1593,7 +1531,6 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
 contract BitSoulMateKIP17Ownable is
     KIP17Full,
     KIP17MintableOwnable,
-    KIP17MetadataMintableOwnable,
     KIP17Burnable,
     KIP17Pausable
 {
