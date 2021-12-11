@@ -1539,6 +1539,7 @@ contract BitSoulMateKIP17Ownable is
     uint256 private constant MAX_SUPPLY = 10000;
     uint256 private constant RESERVED_AMOUNT = 1000;
     uint256 public constant PRICE = 40 * (10**18);
+    uint256 public constant MAX_AMOUNT_PER_TX = 5;
 
     uint256 public mintedReservedAmount = 0;
     uint256 public mintedAmount = 0;
@@ -1565,6 +1566,7 @@ contract BitSoulMateKIP17Ownable is
     }
 
     function purchase(uint256 amount) external payable {
+        require(amount <= MAX_AMOUNT_PER_TX, "Exceeds MAX_AMOUNT_PER_TX");
         require(
             RESERVED_AMOUNT + mintedAmount + amount <= MAX_SUPPLY,
             "Exceeds max supply"
