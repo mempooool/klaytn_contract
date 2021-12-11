@@ -1564,7 +1564,7 @@ contract BitSoulMateKIP17Ownable is
         mintedReservedAmount += amount;
     }
 
-    function mint(uint256 amount) external payable {
+    function purchase(uint256 amount) external payable {
         require(
             RESERVED_AMOUNT + mintedAmount + amount <= MAX_SUPPLY,
             "Exceeds max supply"
