@@ -1569,7 +1569,7 @@ contract BitSoulMateKIP17Ownable is
             RESERVED_AMOUNT + mintedAmount + amount <= MAX_SUPPLY,
             "Exceeds max supply"
         );
-        require(msg.value < amount.mul(PRICE), "Not enough klay");
+        require(msg.value >= amount.mul(PRICE), "Not enough klay");
 
         for (uint256 i = 0; i < amount; i += 1) {
             mint(msg.sender, RESERVED_AMOUNT + mintedAmount + i);
