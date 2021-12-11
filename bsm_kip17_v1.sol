@@ -1534,8 +1534,52 @@ contract BitSoulMateKIP17Ownable is
     KIP17Burnable,
     KIP17Pausable
 {
+    using SafeMath for uint256;
+
+    uint256 private constant MAX_SUPPLY = 10000;
+    uint256 private constant RESERVED_AMOUNT = 1000;
+    uint256 public constant PRICE = 40 * (10**18);
+
+    uint256 public mintedReservedAmount = 0;
+    uint256 public mintedAmount = 0;
+
     constructor(string memory name, string memory symbol)
         public
         KIP17Full(name, symbol)
     {}
+
+    function setBaseURI(string calldata baseURI_) external onlyOwner {
+        _setBaseURI(baseURI_);
+    }
+
+    function mintReserved(address receiver, uint256 amount) external onlyOwner {
+        require(
+            mintedReservedAmount + amount <= RESERVED_AMOUNT,
+            "Exceeds reserved amount"
+        );
+        for (uint256 i = 0; i < amount; i += 1) {
+            mint(receiver, mintedReservedAmount + i);
+        }
+
+        mintedReservedAmount += amount;
+    }
+
+    function mint(uint256 amount) external payable {
+        require(
+            RESERVED_AMOUNT + mintedAmount + amount <= MAX_SUPPLY,
+            "Exceeds max supply"
+        );
+        require(msg.value < amount.mul(PRICE), "Not enough klay");
+
+        for (uint256 i = 0; i < amount; i += 1) {
+            mint(msg.sender, RESERVED_AMOUNT + mintedAmount + i);
+        }
+
+        mintedAmount += amount;
+    }
+
+    function withdraw() external onlyOwner {
+        uint256 amount = address(this).balance;
+        (msg.sender).transfer(amount);
+    }
 }
