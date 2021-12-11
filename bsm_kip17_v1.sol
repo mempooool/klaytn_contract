@@ -25,18 +25,27 @@ interface IKIP13 {
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
-
 // File contracts/token/KIP17/IKIP17.sol
-
-
 
 /**
  * @dev Required interface of an KIP17 compliant contract.
  */
 contract IKIP17 is IKIP13 {
-    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
-    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+    event Transfer(
+        address indexed from,
+        address indexed to,
+        uint256 indexed tokenId
+    );
+    event Approval(
+        address indexed owner,
+        address indexed approved,
+        uint256 indexed tokenId
+    );
+    event ApprovalForAll(
+        address indexed owner,
+        address indexed operator,
+        bool approved
+    );
 
     /**
      * @dev Returns the number of NFTs in `owner`'s account.
@@ -58,7 +67,11 @@ contract IKIP17 is IKIP13 {
      * - If the caller is not `from`, it must be have been allowed to move this
      * NFT by either `approve` or `setApproveForAll`.
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public;
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public;
 
     /**
      * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
@@ -68,21 +81,35 @@ contract IKIP17 is IKIP13 {
      * - If the caller is not `from`, it must be approved to move this NFT by
      * either `approve` or `setApproveForAll`.
      */
-    function transferFrom(address from, address to, uint256 tokenId) public;
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public;
+
     function approve(address to, uint256 tokenId) public;
-    function getApproved(uint256 tokenId) public view returns (address operator);
+
+    function getApproved(uint256 tokenId)
+        public
+        view
+        returns (address operator);
 
     function setApprovalForAll(address operator, bool _approved) public;
-    function isApprovedForAll(address owner, address operator) public view returns (bool);
 
+    function isApprovedForAll(address owner, address operator)
+        public
+        view
+        returns (bool);
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory data
+    ) public;
 }
 
-
 // File contracts/token/KIP17/IERC721Receiver.sol
-
-
 
 /**
  * @title ERC721 token receiver interface
@@ -104,14 +131,15 @@ contract IERC721Receiver {
      * @param data Additional data with no specified format
      * @return bytes4 `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`
      */
-    function onERC721Received(address operator, address from, uint256 tokenId, bytes memory data)
-    public returns (bytes4);
+    function onERC721Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes memory data
+    ) public returns (bytes4);
 }
 
-
 // File contracts/token/KIP17/IKIP17Receiver.sol
-
-
 
 /**
  * @title KIP17 token receiver interface
@@ -134,14 +162,15 @@ contract IKIP17Receiver {
      * @param data Additional data with no specified format
      * @return bytes4 `bytes4(keccak256("onKIP17Received(address,address,uint256,bytes)"))`
      */
-    function onKIP17Received(address operator, address from, uint256 tokenId, bytes memory data)
-    public returns (bytes4);
+    function onKIP17Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes memory data
+    ) public returns (bytes4);
 }
 
-
 // File contracts/math/SafeMath.sol
-
-
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -197,7 +226,11 @@ library SafeMath {
      *
      * _Available since v2.4.0._
      */
-    function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+    function sub(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
         require(b <= a, errorMessage);
         uint256 c = a - b;
 
@@ -255,7 +288,11 @@ library SafeMath {
      *
      * _Available since v2.4.0._
      */
-    function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+    function div(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
         // Solidity only automatically asserts when dividing by 0
         require(b > 0, errorMessage);
         uint256 c = a / b;
@@ -292,16 +329,17 @@ library SafeMath {
      *
      * _Available since v2.4.0._
      */
-    function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+    function mod(
+        uint256 a,
+        uint256 b,
+        string memory errorMessage
+    ) internal pure returns (uint256) {
         require(b != 0, errorMessage);
         return a % b;
     }
 }
 
-
 // File contracts/utils/Address.sol
-
-
 
 /**
  * @dev Collection of functions related to the address type,
@@ -324,15 +362,14 @@ library Address {
 
         uint256 size;
         // solhint-disable-next-line no-inline-assembly
-        assembly { size := extcodesize(account) }
+        assembly {
+            size := extcodesize(account)
+        }
         return size > 0;
     }
 }
 
-
 // File contracts/drafts/Counters.sol
-
-
 
 /**
  * @title Counters
@@ -368,10 +405,7 @@ library Counters {
     }
 }
 
-
 // File contracts/introspection/KIP13.sol
-
-
 
 /**
  * @dev Implementation of the `IKIP13` interface.
@@ -390,7 +424,7 @@ contract KIP13 is IKIP13 {
      */
     mapping(bytes4 => bool) private _supportedInterfaces;
 
-    constructor () internal {
+    constructor() internal {
         // Derived contracts need only register support for their own interfaces,
         // we register support for KIP13 itself here
         _registerInterface(_INTERFACE_ID_KIP13);
@@ -401,7 +435,11 @@ contract KIP13 is IKIP13 {
      *
      * Time complexity O(1), guaranteed to always use less than 30 000 gas.
      */
-    function supportsInterface(bytes4 interfaceId) external view returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        external
+        view
+        returns (bool)
+    {
         return _supportedInterfaces[interfaceId];
     }
 
@@ -422,16 +460,7 @@ contract KIP13 is IKIP13 {
     }
 }
 
-
 // File contracts/token/KIP17/KIP17.sol
-
-
-
-
-
-
-
-
 
 /**
  * @title KIP17 Non-Fungible Token Standard basic implementation
@@ -451,16 +480,16 @@ contract KIP17 is KIP13, IKIP17 {
     bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
     // Mapping from token ID to owner
-    mapping (uint256 => address) private _tokenOwner;
+    mapping(uint256 => address) private _tokenOwner;
 
     // Mapping from token ID to approved address
-    mapping (uint256 => address) private _tokenApprovals;
+    mapping(uint256 => address) private _tokenApprovals;
 
     // Mapping from owner to number of owned token
-    mapping (address => Counters.Counter) private _ownedTokensCount;
+    mapping(address => Counters.Counter) private _ownedTokensCount;
 
     // Mapping from owner to operator approvals
-    mapping (address => mapping (address => bool)) private _operatorApprovals;
+    mapping(address => mapping(address => bool)) private _operatorApprovals;
 
     /*
      *     bytes4(keccak256('balanceOf(address)')) == 0x70a08231
@@ -478,7 +507,7 @@ contract KIP17 is KIP13, IKIP17 {
      */
     bytes4 private constant _INTERFACE_ID_KIP17 = 0x80ac58cd;
 
-    constructor () public {
+    constructor() public {
         // register the supported interfaces to conform to KIP17 via KIP13
         _registerInterface(_INTERFACE_ID_KIP17);
     }
@@ -489,7 +518,10 @@ contract KIP17 is KIP13, IKIP17 {
      * @return uint256 representing the amount owned by the passed address
      */
     function balanceOf(address owner) public view returns (uint256) {
-        require(owner != address(0), "KIP17: balance query for the zero address");
+        require(
+            owner != address(0),
+            "KIP17: balance query for the zero address"
+        );
 
         return _ownedTokensCount[owner].current();
     }
@@ -501,7 +533,10 @@ contract KIP17 is KIP13, IKIP17 {
      */
     function ownerOf(uint256 tokenId) public view returns (address) {
         address owner = _tokenOwner[tokenId];
-        require(owner != address(0), "KIP17: owner query for nonexistent token");
+        require(
+            owner != address(0),
+            "KIP17: owner query for nonexistent token"
+        );
 
         return owner;
     }
@@ -518,7 +553,8 @@ contract KIP17 is KIP13, IKIP17 {
         address owner = ownerOf(tokenId);
         require(to != owner, "KIP17: approval to current owner");
 
-        require(msg.sender == owner || isApprovedForAll(owner, msg.sender),
+        require(
+            msg.sender == owner || isApprovedForAll(owner, msg.sender),
             "KIP17: approve caller is not owner nor approved for all"
         );
 
@@ -533,7 +569,10 @@ contract KIP17 is KIP13, IKIP17 {
      * @return address currently approved for the given token ID
      */
     function getApproved(uint256 tokenId) public view returns (address) {
-        require(_exists(tokenId), "KIP17: approved query for nonexistent token");
+        require(
+            _exists(tokenId),
+            "KIP17: approved query for nonexistent token"
+        );
 
         return _tokenApprovals[tokenId];
     }
@@ -557,7 +596,11 @@ contract KIP17 is KIP13, IKIP17 {
      * @param operator operator address which you want to query the approval of
      * @return bool whether the given operator is approved by the given owner
      */
-    function isApprovedForAll(address owner, address operator) public view returns (bool) {
+    function isApprovedForAll(address owner, address operator)
+        public
+        view
+        returns (bool)
+    {
         return _operatorApprovals[owner][operator];
     }
 
@@ -569,9 +612,16 @@ contract KIP17 is KIP13, IKIP17 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
      */
-    function transferFrom(address from, address to, uint256 tokenId) public {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public {
         //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(msg.sender, tokenId), "KIP17: transfer caller is not owner nor approved");
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId),
+            "KIP17: transfer caller is not owner nor approved"
+        );
 
         _transferFrom(from, to, tokenId);
     }
@@ -587,7 +637,11 @@ contract KIP17 is KIP13, IKIP17 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public {
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public {
         safeTransferFrom(from, to, tokenId, "");
     }
 
@@ -603,9 +657,17 @@ contract KIP17 is KIP13, IKIP17 {
      * @param tokenId uint256 ID of the token to be transferred
      * @param _data bytes data to send along with a safe transfer check
      */
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public {
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    ) public {
         transferFrom(from, to, tokenId);
-        require(_checkOnKIP17Received(from, to, tokenId, _data), "KIP17: transfer to non KIP17Receiver implementer");
+        require(
+            _checkOnKIP17Received(from, to, tokenId, _data),
+            "KIP17: transfer to non KIP17Receiver implementer"
+        );
     }
 
     /**
@@ -625,10 +687,19 @@ contract KIP17 is KIP13, IKIP17 {
      * @return bool whether the msg.sender is approved for the given token ID,
      * is an operator of the owner, or is the owner of the token
      */
-    function _isApprovedOrOwner(address spender, uint256 tokenId) internal view returns (bool) {
-        require(_exists(tokenId), "KIP17: operator query for nonexistent token");
+    function _isApprovedOrOwner(address spender, uint256 tokenId)
+        internal
+        view
+        returns (bool)
+    {
+        require(
+            _exists(tokenId),
+            "KIP17: operator query for nonexistent token"
+        );
         address owner = ownerOf(tokenId);
-        return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender));
+        return (spender == owner ||
+            getApproved(tokenId) == spender ||
+            isApprovedForAll(owner, spender));
     }
 
     /**
@@ -655,7 +726,10 @@ contract KIP17 is KIP13, IKIP17 {
      * @param tokenId uint256 ID of the token being burned
      */
     function _burn(address owner, uint256 tokenId) internal {
-        require(ownerOf(tokenId) == owner, "KIP17: burn of token that is not own");
+        require(
+            ownerOf(tokenId) == owner,
+            "KIP17: burn of token that is not own"
+        );
 
         _clearApproval(tokenId);
 
@@ -681,8 +755,15 @@ contract KIP17 is KIP13, IKIP17 {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
      */
-    function _transferFrom(address from, address to, uint256 tokenId) internal {
-        require(ownerOf(tokenId) == from, "KIP17: transfer of token that is not own");
+    function _transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal {
+        require(
+            ownerOf(tokenId) == from,
+            "KIP17: transfer of token that is not own"
+        );
         require(to != address(0), "KIP17: transfer to the zero address");
 
         _clearApproval(tokenId);
@@ -706,10 +787,13 @@ contract KIP17 is KIP13, IKIP17 {
      * @param _data bytes optional data to send along with the call
      * @return bool whether the call correctly returned the expected magic value
      */
-    function _checkOnKIP17Received(address from, address to, uint256 tokenId, bytes memory _data)
-        internal returns (bool)
-    {
-        bool success; 
+    function _checkOnKIP17Received(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    ) internal returns (bool) {
+        bool success;
         bytes memory returndata;
 
         if (!to.isContract()) {
@@ -718,16 +802,34 @@ contract KIP17 is KIP13, IKIP17 {
 
         // Logic for compatibility with ERC721.
         (success, returndata) = to.call(
-            abi.encodeWithSelector(_ERC721_RECEIVED, msg.sender, from, tokenId, _data)
+            abi.encodeWithSelector(
+                _ERC721_RECEIVED,
+                msg.sender,
+                from,
+                tokenId,
+                _data
+            )
         );
-        if (returndata.length != 0 && abi.decode(returndata, (bytes4)) == _ERC721_RECEIVED) {
+        if (
+            returndata.length != 0 &&
+            abi.decode(returndata, (bytes4)) == _ERC721_RECEIVED
+        ) {
             return true;
         }
 
         (success, returndata) = to.call(
-            abi.encodeWithSelector(_KIP17_RECEIVED, msg.sender, from, tokenId, _data)
+            abi.encodeWithSelector(
+                _KIP17_RECEIVED,
+                msg.sender,
+                from,
+                tokenId,
+                _data
+            )
         );
-        if (returndata.length != 0 && abi.decode(returndata, (bytes4)) == _KIP17_RECEIVED) {
+        if (
+            returndata.length != 0 &&
+            abi.decode(returndata, (bytes4)) == _KIP17_RECEIVED
+        ) {
             return true;
         }
 
@@ -745,10 +847,7 @@ contract KIP17 is KIP13, IKIP17 {
     }
 }
 
-
 // File contracts/token/KIP17/IKIP17Enumerable.sol
-
-
 
 /**
  * @title KIP-17 Non-Fungible Token Standard, optional enumeration extension
@@ -756,17 +855,16 @@ contract KIP17 is KIP13, IKIP17 {
  */
 contract IKIP17Enumerable is IKIP17 {
     function totalSupply() public view returns (uint256);
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256 tokenId);
+
+    function tokenOfOwnerByIndex(address owner, uint256 index)
+        public
+        view
+        returns (uint256 tokenId);
 
     function tokenByIndex(uint256 index) public view returns (uint256);
 }
 
-
 // File contracts/token/KIP17/KIP17Enumerable.sol
-
-
-
-
 
 /**
  * @title KIP-17 Non-Fungible Token with optional enumeration extension logic
@@ -797,7 +895,7 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
     /**
      * @dev Constructor function.
      */
-    constructor () public {
+    constructor() public {
         // register the supported interface to conform to KIP17Enumerable via KIP13
         _registerInterface(_INTERFACE_ID_KIP17_ENUMERABLE);
     }
@@ -808,8 +906,15 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * @param index uint256 representing the index to be accessed of the requested tokens list
      * @return uint256 token ID at the given index of the tokens list owned by the requested address
      */
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256) {
-        require(index < balanceOf(owner), "KIP17Enumerable: owner index out of bounds");
+    function tokenOfOwnerByIndex(address owner, uint256 index)
+        public
+        view
+        returns (uint256)
+    {
+        require(
+            index < balanceOf(owner),
+            "KIP17Enumerable: owner index out of bounds"
+        );
         return _ownedTokens[owner][index];
     }
 
@@ -828,7 +933,10 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * @return uint256 token ID at the given index of the tokens list
      */
     function tokenByIndex(uint256 index) public view returns (uint256) {
-        require(index < totalSupply(), "KIP17Enumerable: global index out of bounds");
+        require(
+            index < totalSupply(),
+            "KIP17Enumerable: global index out of bounds"
+        );
         return _allTokens[index];
     }
 
@@ -839,7 +947,11 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * @param to address to receive the ownership of the given token ID
      * @param tokenId uint256 ID of the token to be transferred
      */
-    function _transferFrom(address from, address to, uint256 tokenId) internal {
+    function _transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal {
         super._transferFrom(from, to, tokenId);
 
         _removeTokenFromOwnerEnumeration(from, tokenId);
@@ -883,7 +995,11 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * @param owner address owning the tokens
      * @return uint256[] List of token IDs owned by the requested address
      */
-    function _tokensOfOwner(address owner) internal view returns (uint256[] storage) {
+    function _tokensOfOwner(address owner)
+        internal
+        view
+        returns (uint256[] storage)
+    {
         return _ownedTokens[owner];
     }
 
@@ -914,7 +1030,9 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
      * @param from address representing the previous owner of the given token ID
      * @param tokenId uint256 ID of the token to be removed from the tokens list of the given address
      */
-    function _removeTokenFromOwnerEnumeration(address from, uint256 tokenId) private {
+    function _removeTokenFromOwnerEnumeration(address from, uint256 tokenId)
+        private
+    {
         // To prevent a gap in from's tokens array, we store the last token in the index of the token to delete, and
         // then delete the last slot (swap and pop).
 
@@ -962,10 +1080,7 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
     }
 }
 
-
 // File contracts/token/KIP17/IKIP17Metadata.sol
-
-
 
 /**
  * @title KIP-17 Non-Fungible Token Standard, optional metadata extension
@@ -973,16 +1088,13 @@ contract KIP17Enumerable is KIP13, KIP17, IKIP17Enumerable {
  */
 contract IKIP17Metadata is IKIP17 {
     function name() external view returns (string memory);
+
     function symbol() external view returns (string memory);
+
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
 
-
 // File contracts/token/KIP17/KIP17Metadata.sol
-
-
-
-
 
 contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     // Token name
@@ -1006,7 +1118,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     /**
      * @dev Constructor function
      */
-    constructor (string memory name, string memory symbol) public {
+    constructor(string memory name, string memory symbol) public {
         _name = name;
         _symbol = symbol;
 
@@ -1036,7 +1148,10 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
      * @param tokenId uint256 ID of the token to query
      */
     function tokenURI(uint256 tokenId) external view returns (string memory) {
-        require(_exists(tokenId), "KIP17Metadata: URI query for nonexistent token");
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI query for nonexistent token"
+        );
         return _tokenURIs[tokenId];
     }
 
@@ -1047,7 +1162,10 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
      * @param uri string URI to assign
      */
     function _setTokenURI(uint256 tokenId, string memory uri) internal {
-        require(_exists(tokenId), "KIP17Metadata: URI set of nonexistent token");
+        require(
+            _exists(tokenId),
+            "KIP17Metadata: URI set of nonexistent token"
+        );
         _tokenURIs[tokenId] = uri;
     }
 
@@ -1068,12 +1186,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
     }
 }
 
-
 // File contracts/token/KIP17/KIP17Full.sol
-
-
-
-
 
 /**
  * @title Full KIP-17 Token
@@ -1082,15 +1195,15 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
  * @dev see http://kips.klaytn.com/KIPs/kip-17-non_fungible_token
  */
 contract KIP17Full is KIP17, KIP17Enumerable, KIP17Metadata {
-    constructor (string memory name, string memory symbol) public KIP17Metadata(name, symbol) {
+    constructor(string memory name, string memory symbol)
+        public
+        KIP17Metadata(name, symbol)
+    {
         // solhint-disable-previous-line no-empty-blocks
     }
 }
 
-
 // File contracts/ownership/Ownable.sol
-
-
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -1104,12 +1217,15 @@ contract KIP17Full is KIP17, KIP17Enumerable, KIP17Metadata {
 contract Ownable {
     address payable private _owner;
 
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event OwnershipTransferred(
+        address indexed previousOwner,
+        address indexed newOwner
+    );
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
      */
-    constructor () internal {
+    constructor() internal {
         _owner = msg.sender;
         emit OwnershipTransferred(address(0), _owner);
     }
@@ -1160,31 +1276,28 @@ contract Ownable {
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
      */
     function _transferOwnership(address payable newOwner) internal {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        require(
+            newOwner != address(0),
+            "Ownable: new owner is the zero address"
+        );
         emit OwnershipTransferred(_owner, newOwner);
         _owner = newOwner;
     }
 }
 
-
 // File contracts/token/KIP17/KIP17MetadataMintableOwnable.sol
-
-
-
-
 
 /**
  * @title KIP17MetadataMintable
  * @dev KIP17 minting logic with metadata.
  */
 contract KIP17MetadataMintableOwnable is KIP13, KIP17, KIP17Metadata, Ownable {
-
     bytes4 private constant _INTERFACE_ID_KIP17_METADATA_MINTABLE = 0xfac27f46;
 
     /**
      * @dev Constructor function.
      */
-    constructor () public {
+    constructor() public {
         // register the supported interface to conform to KIP17Mintable via KIP13
         _registerInterface(_INTERFACE_ID_KIP17_METADATA_MINTABLE);
     }
@@ -1196,18 +1309,18 @@ contract KIP17MetadataMintableOwnable is KIP13, KIP17, KIP17Metadata, Ownable {
      * @param tokenURI The token URI of the minted token.
      * @return A boolean that indicates if the operation was successful.
      */
-    function mintWithTokenURI(address to, uint256 tokenId, string memory tokenURI) public onlyOwner returns (bool) {
+    function mintWithTokenURI(
+        address to,
+        uint256 tokenId,
+        string memory tokenURI
+    ) public onlyOwner returns (bool) {
         _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
         return true;
     }
 }
 
-
 // File contracts/token/KIP17/KIP17MintableOwnable.sol
-
-
-
 
 /**
  * @title KIP17Mintable
@@ -1219,7 +1332,7 @@ contract KIP17MintableOwnable is KIP17, Ownable {
     /**
      * @dev Constructor function.
      */
-    constructor () public {
+    constructor() public {
         // register the supported interface to conform to KIP17Mintable via KIP13
         _registerInterface(_INTERFACE_ID_KIP17_MINTABLE);
     }
@@ -1236,11 +1349,7 @@ contract KIP17MintableOwnable is KIP17, Ownable {
     }
 }
 
-
 // File contracts/token/KIP17/KIP17Burnable.sol
-
-
-
 
 /**
  * @title KIP17 Burnable Token
@@ -1258,7 +1367,7 @@ contract KIP17Burnable is KIP13, KIP17 {
     /**
      * @dev Constructor function.
      */
-    constructor () public {
+    constructor() public {
         // register the supported interface to conform to KIP17Burnable via KIP13
         _registerInterface(_INTERFACE_ID_KIP17_BURNABLE);
     }
@@ -1269,15 +1378,15 @@ contract KIP17Burnable is KIP13, KIP17 {
      */
     function burn(uint256 tokenId) public {
         //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(msg.sender, tokenId), "KIP17Burnable: caller is not owner nor approved");
+        require(
+            _isApprovedOrOwner(msg.sender, tokenId),
+            "KIP17Burnable: caller is not owner nor approved"
+        );
         _burn(tokenId);
     }
 }
 
-
 // File contracts/access/Roles.sol
-
-
 
 /**
  * @title Roles
@@ -1285,7 +1394,7 @@ contract KIP17Burnable is KIP13, KIP17 {
  */
 library Roles {
     struct Role {
-        mapping (address => bool) bearer;
+        mapping(address => bool) bearer;
     }
 
     /**
@@ -1308,16 +1417,17 @@ library Roles {
      * @dev Check if an account has this role.
      * @return bool
      */
-    function has(Role storage role, address account) internal view returns (bool) {
+    function has(Role storage role, address account)
+        internal
+        view
+        returns (bool)
+    {
         require(account != address(0), "Roles: account is the zero address");
         return role.bearer[account];
     }
 }
 
-
 // File contracts/access/roles/PauserRole.sol
-
-
 
 contract PauserRole {
     using Roles for Roles.Role;
@@ -1327,12 +1437,15 @@ contract PauserRole {
 
     Roles.Role private _pausers;
 
-    constructor () internal {
+    constructor() internal {
         _addPauser(msg.sender);
     }
 
     modifier onlyPauser() {
-        require(isPauser(msg.sender), "PauserRole: caller does not have the Pauser role");
+        require(
+            isPauser(msg.sender),
+            "PauserRole: caller does not have the Pauser role"
+        );
         _;
     }
 
@@ -1359,10 +1472,7 @@ contract PauserRole {
     }
 }
 
-
 // File contracts/lifecycle/Pausable.sol
-
-
 
 /**
  * @dev Contract module which allows children to implement an emergency stop
@@ -1390,7 +1500,7 @@ contract Pausable is PauserRole {
      * @dev Initializes the contract in unpaused state. Assigns the Pauser role
      * to the deployer.
      */
-    constructor () internal {
+    constructor() internal {
         _paused = false;
     }
 
@@ -1434,12 +1544,7 @@ contract Pausable is PauserRole {
     }
 }
 
-
 // File contracts/token/KIP17/KIP17Pausable.sol
-
-
-
-
 
 /**
  * @title KIP17 Non-Fungible Pausable token
@@ -1461,7 +1566,7 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
     /**
      * @dev Constructor function.
      */
-    constructor () public {
+    constructor() public {
         // register the supported interface to conform to KIP17Pausable via KIP13
         _registerInterface(_INTERFACE_ID_KIP17_PAUSABLE);
     }
@@ -1474,17 +1579,26 @@ contract KIP17Pausable is KIP13, KIP17, Pausable {
         super.setApprovalForAll(to, approved);
     }
 
-    function transferFrom(address from, address to, uint256 tokenId) public whenNotPaused {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public whenNotPaused {
         super.transferFrom(from, to, tokenId);
     }
 }
 
-
 // File contracts/token/KIP17/KIP17TokenOwnable.sol
 
-
-
-contract BitSoulMateKIP17Ownable is KIP17Full, KIP17MintableOwnable, KIP17MetadataMintableOwnable, KIP17Burnable, KIP17Pausable {
-    constructor (string memory name, string memory symbol) public KIP17Full(name, symbol) {
-    }
+contract BitSoulMateKIP17Ownable is
+    KIP17Full,
+    KIP17MintableOwnable,
+    KIP17MetadataMintableOwnable,
+    KIP17Burnable,
+    KIP17Pausable
+{
+    constructor(string memory name, string memory symbol)
+        public
+        KIP17Full(name, symbol)
+    {}
 }
