@@ -1155,7 +1155,7 @@ contract KIP17Metadata is KIP13, KIP17, IKIP17Metadata {
             _exists(tokenId),
             "KIP17Metadata: URI query for nonexistent token"
         );
-        return string(abi.encodePacked(baseURI, tokenId));
+        return string(abi.encodePacked(baseURI, tokenId, ".json"));
     }
 }
 
